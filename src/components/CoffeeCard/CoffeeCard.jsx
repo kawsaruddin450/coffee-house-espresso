@@ -1,8 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
-const CoffeeCard = ({ coffee }) => {
+const CoffeeCard = ({ coffee, setCoffees, coffees }) => {
     const { _id, name, quantity, supplier, taste, details, category, imageUrl } = coffee;
 
     const handleDelete = _id => {
@@ -28,6 +27,8 @@ const CoffeeCard = ({ coffee }) => {
                                 text: "Your coffee has been deleted.",
                                 icon: "success"
                             });
+                            const remaining = coffees.filter(co => co._id !== _id);
+                            setCoffees(remaining);
                         }
                     });
             }
@@ -50,7 +51,7 @@ const CoffeeCard = ({ coffee }) => {
                 </div>
                 <div className="card-actions justify-end">
                     <div className="join join-vertical gap-6">
-                        <button className="btn btn-warning join-item">View</button>
+                        <Link to={`coffees/${_id}`}><button className="btn btn-warning join-item">View</button></Link>
                         <Link to={`/updatecoffee/${_id}`}><button className="btn btn-primary join-item">Edit</button></Link>
                         <button onClick={() => handleDelete(_id)} className="btn btn-error join-item">Delete</button>
                     </div>
