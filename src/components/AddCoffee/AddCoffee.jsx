@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2'
 
 const AddCoffee = () => {
     const handleAddCoffee = event => {
@@ -12,9 +13,26 @@ const AddCoffee = () => {
         const details = form.details.value;
         const imageUrl = form.imageUrl.value;
 
-        const newCoffee = {name, quantity, supplier, taste, category, details, imageUrl};
-
-        console.log(newCoffee);
+        const newCoffee = { name, quantity, supplier, taste, category, details, imageUrl };
+        fetch("http://localhost:5000/coffee", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(newCoffee)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.insertedId) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'Coffee Added Successfully.',
+                        icon: 'success',
+                        confirmButtonText: 'Ok'
+                    })
+                }
+            })
     }
     return (
         <div className="bg-slate-200 p-28">
@@ -89,7 +107,7 @@ const AddCoffee = () => {
                 {/* Submit Button */}
                 <div className="">
                     <div className="form-control">
-                        <input type="submit"  className="btn btn-warning w-full" value="Add Coffee" />
+                        <input type="submit" className="btn btn-warning w-full" value="Add Coffee" />
                     </div>
                 </div>
             </form>
